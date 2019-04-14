@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{fragments/main_layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CMSimon - Edition</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="container">
+
+
+    <div th:if="${pages} != null">
+        <div th:if="${#lists.size(pages)} == 0">
+            <h3>Aucune page n'a été crée.</h3>
+        </div>
+
+        <div th:each="page : ${pages}">
+            <div class="card w-100">
+                <div class="card-body">
+                    <h4 class="card-title" th:utext="${page.titre}">..</h4>
+                    <h5 class="card-subtitle mb-2 text-muted" th:utext="${page.url}">..</h5>
+                    <p class="card-text" th:utext="${page.resume}">..</p>
+                    <a th:href="@{${page.id}}" class="btn btn-primary">Editer</a>
+                    <a href="#" class="btn btn-primary">Rien du tout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:if="${pages} == null">
+        <div th:include="fragments/pageForm :: pageForm"></div>
+    </div>
+</div>
+</body>
+</html>

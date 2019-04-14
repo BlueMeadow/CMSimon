@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{fragments/main_layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CMSimon - Administration</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+
+    <a th:href="@{'administration/newPage/'}" class="btn btn-primary">Créer une nouvelle page</a>
+    <a th:href="@{'administration/edit/'}" class="btn btn-primary">Éditer une page existante</a>
+
+</div>
+</body>
+</html>

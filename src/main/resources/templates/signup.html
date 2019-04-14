@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{fragments/main_layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CMSimon</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+
+    <form class="needs-validation" th:action="@{/signup}" th:object="${signUpForm}" method="POST" novalidate
+          oninput='mdp2.setCustomValidity(mdp2.value !== mdp.value ? "Passwords do not match." : "")'>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="inputNom">Nom</label>
+                <input type="text" id="inputNom" class="form-control" th:field="*{nom}" required >
+                <div class="invalid-feedback">
+                    Merci de renseigner votre nom.
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPrenom">Prénom</label>
+                <input type="text" id="inputPrenom" class="form-control" th:field="*{prenom}" required >
+                <div class="invalid-feedback">
+                    Merci de renseigner votre prénom.
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPseudo">Pseudo</label>
+                <input type="text" id="inputPseudo" class="form-control" th:field="*{pseudo}" required>
+                <div class="invalid-feedback">
+                    Merci de choisir un pseudo.
+                </div>
+            </div>
+        </div>
+        <div class="form-group w-50">
+            <label for="inputMail">E-mail</label>
+            <input type="email" id="inputMail" class="form-control" th:field="*{mail}" required >
+            <div class="invalid-feedback">
+                Vous devez donner une adresse e-mail valide.
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col">
+                <label for="inputMdp">Mot de passe</label>
+                <input type="password" id="inputMdp" name="mdp" class="form-control" th:field="*{mdp}" required >
+                <div class="invalid-feedback">
+                    Merci de renseigner votre nom.
+                </div>
+            </div>
+            <div class="form-group col">
+                <label for="inputVerifMdp">Confirmation du mot de passe</label>
+                <input type="password" id="inputVerifMdp" name="mdp2" class="form-control" required >
+                <div class="invalid-feedback">
+                    Les mots de passe ne correspondent pas.
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+
+        </div>
+
+        <button type="submit" class="btn btn-primary">Valider</button>
+    </form>
+
+
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+// Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</div>
+</body>
+</html>

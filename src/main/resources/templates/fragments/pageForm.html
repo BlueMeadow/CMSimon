@@ -1,0 +1,50 @@
+<header th:fragment="pageForm" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<form class="needs-validation" th:action="${page} != null ? @{${page.id}} : @{/administration/newPage}" th:object="${pageForm}" method="POST" novalidate>
+    <div class="form-row">
+        <div class="form-group col-md-9">
+            <label for="inputTitre">Titre</label>
+            <input type="text" id="inputTitre" class="form-control" th:field="*{titre}" required >
+            <div class="invalid-feedback">
+                Vous devez donner un titre.
+            </div>
+        </div>
+        <div class="form-group col-md-3">
+            <label for="inputUrl">Url</label>
+            <input type="text" id="inputUrl" class="form-control" th:field="*{url}" required >
+            <div class="invalid-feedback">
+                Vous devez donner une URL.
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputContenu">Page</label>
+        <textarea id="inputContenu" class="form-control vresize" th:field="*{contenu_p}" rows="35" required></textarea>
+        <div class="invalid-feedback">
+            Vous ne pouvez pas publier une page vide.
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Valider</button>
+</form>
+
+
+<script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+// Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+</header>

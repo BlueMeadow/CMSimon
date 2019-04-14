@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{fragments/main_layout}">
+<head>
+    <link href="../static/css/bootstrap.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="../static/css/cms.css">
+    <title>CMSimon</title>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+
+    <div><h1>Bienvenue sur mon site qu'il est bien</h1></div>
+    <div th:include="fragments/pageDisplay :: pageDisplay"></div>
+
+    </div>
+</div>
+</body>
+</html>

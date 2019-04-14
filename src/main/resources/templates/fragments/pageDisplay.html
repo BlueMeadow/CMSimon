@@ -1,0 +1,14 @@
+<header th:fragment="pageForm" xmlns:th="http://www.w3.org/1999/xhtml">
+
+    <h1 id="titre" th:text="${titre}">-- TITRE --</h1>
+    <div id="contenu" th:text="${contenu_p}">-- CONTENU --</div>
+    <div id="auteur" >
+        <span th:field="*{auteur}, publié le *{date_creation_p}" ></span><span th:text="${date_edition_p} != null ? ', dernière édition le ${date_edition_p}' : ''" ></span>
+    </div>
+    <div id="commentaires">
+
+
+
+    </div>
+
+</header>
