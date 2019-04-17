@@ -15,11 +15,15 @@ public class Page {
     @Id
     @GeneratedValue
     private Long page_id;
+    @Column(name = "url")
     private String url;
+    @Column(name = "titre")
     private String titre;
+    @Column(name = "resume")
     private String resume;
-    @Column(length = 65535,columnDefinition="Text")
+    @Column(name= "contenu_p", length = 65535,columnDefinition="Text")
     private String contenu_p;
+    @Column(name = "date_creation_p")
     private Date date_creation_p;
     @Nullable
     private Date date_edition_p;

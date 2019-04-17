@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html lang="fr" xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{fragments/main_layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CMSimon - Modération</title>
+    <script th:inline="javascript">
+
+        function fire_ajax_delete_comm(idComm, isModere) {
+
+            var rqBody = {};
+            rqBody["id"] = idComm;
+            rqBody["modere"] = isModere;
+
+            //Bloque le bouton submit le temps qu'on reçoive la réponse de la requete
+
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: window.location.href,
+                data: JSON.stringify(rqBody),
+                dataType: 'text',
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    console.log("SUCCESS : ", data);
+                    if(isModere){
+                        $('#modContainer').html(data);
+                    } else {
+                        $('#nonModContainer').html(data);
+                    }
+
+                },
+                error: function (e) {
+                    console.log("ERROR : ", e);
+                }
+            });
+        }
+    </script>
+
+</head>
+<body>
+<div layout:fragment="content" class="container">
+<h2>Commentaires à modérer</h2>
+<div id="nonModContainer" th:insert="/fragments/comments :: nonModeres"></div>
+
+<br>
+<h2>Commentaires vus</h2>
+
+ <div id="modContainer" th:insert="/fragments/comments :: moderes"></div>
+
+
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+</head>
+<body>
+
+
+<div th:fragment="nonModeres">
+    <div class="accordion" id="accordion_nm">
+        <div  th:each="listComment: ${commNonModeres}">
+            <div class="card" th:if="${#lists.size(listComment)} != 0">
+                <div class="card-header" th:id="'heading_nm_'+${listCommentStat.index}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                th:data-target="'#collapse_nm_'+${listCommentStat.index}" aria-expanded="false"
+                                th:aria-controls="'collapse_nm_'+${listCommentStat.index}" th:text="${pages[listCommentStat.index].titre}">
+                            -- TITRE PAGE --
+                        </button>
+                    </h5>
+                </div>
+
+                <div th:id="'collapse_nm_'+${listCommentStat.index}" class="collapse"
+                     th:aria-labelledby="'heading_nm_'+${listCommentStat.index}" data-parent="#accordion_nm">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" th:each="commentaire : ${listComment}">
+                                <a class="unlink fill" data-toggle="collapse" th:href="'#collapsable_nm_'+ ${listCommentStat.index} + '_' + ${commentaireStat.index}"
+                                   role="button" aria-expanded="false" aria-controls="collapse">
+                                    <span th:utext="${commentaire.contenu}">-- COMMENTAIRE --</span>
+                                </a>
+                                <div th:id="'collapsable_nm_'+ ${listCommentStat.index} + '_' + ${commentaireStat.index}" class="collapse text-muted">
+                                    <small>
+                                        <span class="font-weight-bold" th:text="${commentaire.auteur}">-- AUTEUR --</span>
+                                        <span th:text="${', le ' + #dates.format(commentaire.date, 'dd-MM-yyyy à HH:mm')}">-- DATE PUBLICATION --</span>
+                                        <button class="btn-secondary" th:onclick="'fire_ajax_delete_comm('+${commentaire.id}+',' +${commentaire.modere}+')'">Supprimer</button>
+                                    </small>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <form th:action="@{/moderation/vus}" method="post">
+        <button type="submit" class="btn btn-primary">Marquer comme lus</button>
+    </form>
+</div>
+
+
+
+<div th:fragment="moderes">
+    <div class="accordion undecorated-link" id="accordion_m">
+        <div  th:each="listComment: ${commModeres}">
+            <div class="card" th:if="${#lists.size(listComment)} != 0">
+                <div class="card-header" th:id="'heading_'+${listCommentStat.index}">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                                th:data-target="'#collapse_'+${listCommentStat.index}" aria-expanded="false"
+                                th:aria-controls="'collapse'+${listCommentStat.index}" th:text="${pages[listCommentStat.index].titre}">
+                            -- TITRE PAGE --
+                        </button>
+                    </h5>
+                </div>
+                <div th:id="'collapse_'+${listCommentStat.index}" class="collapse"
+                     th:aria-labelledby="'heading_'+${listCommentStat.index}" data-parent="#accordion_m">
+                    <div class="card-body">
+                        <div th:each="commentaire : ${listComment}">
+                            <a class="unlink fill" data-toggle="collapse" th:href="'#collapsable_'+ ${listCommentStat.index} + '_' + ${commentaireStat.index}"
+                               role="button" aria-expanded="false" aria-controls="collapse">
+                                <span th:utext="${commentaire.contenu}">-- COMMENTAIRE --</span>
+                            </a>
+                            <div th:id="'collapsable_'+ ${listCommentStat.index} + '_' + ${commentaireStat.index}" class="collapse text-muted">
+                                <small>
+                                    <span class="font-weight-bold" th:text="${commentaire.auteur}">-- AUTEUR --</span>
+                                    <span th:text="${', le ' + #dates.format(commentaire.date, 'dd-MM-yyyy à HH:mm')}">-- DATE PUBLICATION --</span>
+                                    <button class="btn-secondary" th:onclick="'fire_ajax_delete_comm('+${commentaire.id}+',' +${commentaire.modere}+')'">Supprimer</button>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

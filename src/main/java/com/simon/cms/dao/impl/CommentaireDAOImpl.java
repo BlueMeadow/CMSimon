@@ -2,6 +2,7 @@ package com.simon.cms.dao.impl;
 
 import com.simon.cms.dao.dao.CommentaireDAO;
 import com.simon.cms.model.Commentaire;
+import com.simon.cms.model.Page;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,22 +22,41 @@ public class CommentaireDAOImpl implements CommentaireDAO {
     @Transactional(readOnly=true)
     public int getCountCommentaire() {
         String qlString = "SELECT count(commentaire) FROM Commentaire commentaire";
-        try{
-            return (int) em.createQuery(qlString).getSingleResult();
-        }catch(Exception e){
-        }
-        return 0;
+        return (int) em.createQuery(qlString).getSingleResult();
+
     }
 
     @Override
     @Transactional
     public List<Commentaire> getListCommentaire() {
         String qlString = "SELECT commentaire FROM Commentaire commentaire";
-        try{
-            return em.createQuery(qlString).getResultList();
-        }catch(Exception e){
-        }
-        return null;
+        return em.createQuery(qlString).getResultList();
+    }
+
+    @Override
+    @Transactional
+    public List<Commentaire> getListCommentaireByPage(Page p) {
+        String qlString = "SELECT commentaire FROM Commentaire commentaire WHERE " +
+                              "commentaire.page = '"+p.getId()+"' ORDER BY commentaire.date_publication_c DESC";
+        return em.createQuery(qlString).getResultList();
+    }
+
+    @Override
+    @Transactional
+    public List<Commentaire> getListCommentaireModeresByPage(Page p) {
+        String qlString = "SELECT commentaire FROM Commentaire commentaire WHERE " +
+                          "commentaire.page = '"+p.getId()+"' AND commentaire.modere = true ORDER BY commentaire.date_publication_c ASC";
+        return em.createQuery(qlString).getResultList();
+
+    }
+
+    @Override
+    @Transactional
+    public List<Commentaire> getListCommentaireNonModeresByPage(Page p) {
+        String qlString = "SELECT commentaire FROM Commentaire commentaire WHERE " +
+                              "commentaire.page = '"+p.getId()+"' AND commentaire.modere = false ORDER BY commentaire.date_publication_c ASC";
+        return em.createQuery(qlString).getResultList();
+
     }
 
     @Override
@@ -59,10 +79,18 @@ public class CommentaireDAOImpl implements CommentaireDAO {
         return em.find(Commentaire.class, id);
     }
 
-
     @Override
     @Transactional
     public void removeCommentaire(Commentaire c){
         em.remove(c);
     }
+
+    @Override
+    @Transactional
+    public void markAsRead(Commentaire c){
+        c.setModere(true);
+        em.merge(c);
+    }
+
+
 }

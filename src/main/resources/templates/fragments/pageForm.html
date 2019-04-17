@@ -1,6 +1,6 @@
 <header th:fragment="pageForm" xmlns:th="http://www.w3.org/1999/xhtml">
 
-<form class="needs-validation" th:action="${page} != null ? @{${page.id}} : @{/administration/newPage}" th:object="${pageForm}" method="POST" novalidate>
+<form class="needs-validation" th:action="${page} != null ? @{${page.id}} : @{/administration/pageCreation}" th:object="${pageForm}" method="POST" novalidate>
     <div class="form-row">
         <div class="form-group col-md-9">
             <label for="inputTitre">Titre</label>

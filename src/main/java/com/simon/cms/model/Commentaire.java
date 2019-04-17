@@ -2,7 +2,7 @@ package com.simon.cms.model;
 
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Entity
 public class Commentaire {
@@ -11,9 +11,7 @@ public class Commentaire {
     @GeneratedValue
     private Long comm_id;
 
-    @OneToOne
-    @JoinColumn(name = "auteur_id_c")
-    private Auteur auteur;
+    private String auteur;
 
     @ManyToOne
     @JoinColumn(name = "page_id_c")
@@ -24,14 +22,18 @@ public class Commentaire {
     @Column(length = 65535,columnDefinition="Text")
     private String contenu_c;
 
+    //A été vu par un modérateur / administrateur sur la page de modération
+    private boolean modere;
+
     public Commentaire() {
     }
 
-    public Commentaire(Auteur auteur, Page page, Date date_publication_c, String contenu_c) {
+    public Commentaire(String auteur, Page page, Date date_publication_c, String contenu_c) {
         this.auteur = auteur;
         this.page = page;
         this.date_publication_c = date_publication_c;
         this.contenu_c = contenu_c;
+        this.modere = false;
     }
 
     public Long getId() {
@@ -42,11 +44,11 @@ public class Commentaire {
         this.comm_id = comm_id;
     }
 
-    public Auteur getAuteur() {
+    public String getAuteur() {
         return auteur;
     }
 
-    public void setAuteur(Auteur auteur) {
+    public void setAuteur(String auteur) {
         this.auteur = auteur;
     }
 
@@ -72,5 +74,13 @@ public class Commentaire {
 
     public void setContenu(String contenu_c) {
         this.contenu_c = contenu_c;
+    }
+
+    public boolean isModere() {
+        return modere;
+    }
+
+    public void setModere(boolean modere) {
+        this.modere = modere;
     }
 }

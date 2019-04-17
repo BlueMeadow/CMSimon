@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+</head>
+
+<body>
+<div th:fragment="pageContent" >
+
+    <h1 id="titre" th:text="${page.titre}">-- TITRE --</h1>
+    <br>
+    <div id="contenu" th:text="${page.contenu}">-- CONTENU --</div>
+    <div id="auteur" >
+        <small class="text-muted">
+            <span class="font-weight-bold" th:text="${page.auteur}">-- AUTEUR --</span>
+            <span th:text="${', le ' + #dates.format(page.datePublication, 'dd-MM-yyyy à HH:mm')}" >-- DATE PUBLICATION --</span>
+            <span th:text="${page.dateEdition} != null ? ', dernière édition le '+ ${#dates.format(page.dateEdition, 'dd-MM-yyyy à HH:mm')} : ''" >-- DATE EDITION --</span></small>
+    </div>
+</div>
+
+<div th:fragment="comments">
+    <hr>
+    <label>Commentaires</label>
+    <div th:if="${#lists.size(commentaires)} == 0">&nbsp;&nbsp;&nbsp;Il n'y a pas encore de commentaire, soyez le premier à donner votre avis !</div>
+    <div th:each="commentaire : ${commentaires}">
+        <div class="card">
+            <div class="card-body text-primary">
+                <p id="comm_content" class="card-text" th:text="${commentaire.contenu}">-- CONTENU --</p>
+            </div>
+            <p class="card-text">
+                <small class="text-muted"><span class="font-weight-bold" th:text="${commentaire.auteur}">-- AUTEUR --</span>
+                    <span th:text="${', le ' + #dates.format(commentaire.date, 'dd-MM-yyyy à HH:mm')}">-- DATE PUBLICATION --</span></small>
+            </p>
+        </div>
+    </div>
+    <div id="nv_comm">
+        <br>
+        <form id="commentForm" method="POST">
+            <label for="commContent">Nouveau commentaire</label>
+            <textarea id="commContent" class="form-control noresize w-75" rows="2"></textarea>
+            <input type="submit" id="submitComment" class="btn btn-secondary">
+        </form>
+    </div>
+
+
+</div>
+
+
+
+
+
+</body>

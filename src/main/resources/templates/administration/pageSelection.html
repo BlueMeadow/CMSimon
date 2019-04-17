@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.w3.org/1999/xhtml" layout:decorate="~{fragments/main_layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>CMSimon - Sélection</title>
+</head>
+<body>
+
+<div layout:fragment="content" class="container">
+
+<nav aria-label="Page navigation">
+    <ul class="pagination pagination-circle pg-blue">
+        <li class="page-item" th:classappend="${pagination.number == 0 ? 'disabled':''}">
+            <a class="page-link" th:classappend="${pagination.number == 0 ? 'disabled':''}" th:href="@{/administration/pageSelection(size=8, page=1)}">Début</a>
+        </li>
+        <li th:each="pageNumber : ${pageNumbers}" th:classappend="${pageNumber==pagination.number + 1 ? 'active' :''}"  class="page-item">
+            <a class="page-link" th:text="${pageNumber}" th:classappend="${ 'page-item' + pageNumber==pagination.number + 1 ? 'active' :''}" th:href="@{/administration/pageSelection(size=${pagination.size}, page=${pageNumber})}"  >
+                -- DÉFAUT --
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${pagination.number+1 == pagination.totalPages ? 'disabled':''}">
+            <a class="page-link" th:classappend="${pagination.number+1 == pagination.totalPages ? 'disabled':''}" th:href="@{/administration/pageSelection(size=${pagination.size}, page=${pagination.totalPages})}">Fin</a>
+        </li>
+    </ul>
+</nav>
+
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-start text-center">
+            <div class="col-xs-8 col-sm-8 col-md-6 col-lg-4 my-5">
+                <section class="section-feature-plain">
+                    <a class="unlink" th:href="@{/administration/pageCreation}">
+                        <div>
+                            <h2>Nouvelle page</h2>
+                            <hr>
+                            <p class="">Créez une nouvelle page pour le site.</p>
+                        </div>
+                    </a>
+                </section>
+            </div>
+            <div th:each="page : ${pagination.content}" class="col-xs-8 col-sm-8 col-md-6 col-lg-4 my-5" >
+                <section class="section-feature-plain">
+                        <h2 th:text="${page.titre}">-- TITRE--</h2>
+                        <hr>
+                        <p class="" th:text="${page.resume}">-- RESUME --</p>
+                        <a th:href="@{|/administration/pageEdition/${page.id}|}" class="btn btn-primary">Éditer</a>
+                        <a th:href="@{|/administration/pageSelection/visibilite/${page.id}|}" class="btn btn-primary" th:text="${page.visible} == true ? 'Cacher' : 'Publier'">-- TEXTE BOUTON--</a>
+                        <button class="btn btn-primary" th:onclick="fire_ajax_delete_page()">Supprimer</button>
+                </section>
+            </div>
+        </div>
+    </div>
+</section>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination pagination-circle pg-blue">
+        <li class="page-item" th:classappend="${pagination.number == 0 ? 'disabled':''}">
+            <a class="page-link" th:classappend="${pagination.number == 0 ? 'disabled':''}" th:href="@{/administration/pageSelection(size=8, page=1)}">Début</a>
+        </li>
+        <li th:each="pageNumber : ${pageNumbers}" th:class="${ 'page-item' + pageNumber==pagination.number + 1} ? 'active' :''"  >
+            <a class="page-link" th:href="@{/administration/pageSelection(size=${pagination.size}, page=${pageNumber})}" th:text="${pageNumber}" >
+                -- DÉFAUT --
+            </a>
+        </li>
+        <li class="page-item" th:classappend="${pagination.number+1 == pagination.totalPages ? 'disabled':''}">
+            <a class="page-link" th:classappend="${pagination.number+1 == pagination.totalPages ? 'disabled':''}" th:href="@{/administration/pageSelection(size=${pagination.size}, page=${pagination.totalPages})}">Fin</a>
+        </li>
+    </ul>
+</nav>
+
+</div>
+</body>
+</html>
