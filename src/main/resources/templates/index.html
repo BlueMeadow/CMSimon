@@ -1,74 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml"
-      xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{fragments/main_layout}">
 <head>
     <title>CMSimon</title>
-    <script th:inline="javascript">
-        $(document).ready(function () {
-            $("#commentForm").submit(function (event) {
-                //Bloque le submit, on l'envoie à la main
-                event.preventDefault();
-                fire_ajax_submit();
-            });
-        });
 
-
-        function fire_ajax_submit() {
-
-            var rqBody = {};
-            rqBody["contenu_c"] = document.getElementById("commContent").value;
-
-            //Bloque le bouton submit le temps qu'on reçoive la réponse de la requete
-            $("#submitComment").prop("disabled", true);
-
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: window.location.href,
-                data: JSON.stringify(rqBody),
-                dataType: 'text',
-                cache: false,
-                timeout: 600000,
-                success: function (data) {
-                    console.log("SUCCESS : ", data);
-                    //Réactive le bouton submit après avoir recu la réponse
-                    $("#submitComment").prop("disabled", false);
-
-                    //Récupère l'url du fichier
-                    /*<![CDATA[*/
-
-                    var url = /*[[@{/fragments/comments}]]*/ 'default';
-
-                    /*]]>*/
-
-                    console.log(url);
-                    $('#commentContainer').html(data);
-
-
-                },
-                error: function (e) {
-                    console.log("ERROR : ", e);
-                    //Réactive le bouton submit après avoir recu la réponse
-                    $("#submitComment").prop("disabled", false);
-                }
-            });
-        }
-    </script>
 
 </head>
 <body>
 <div layout:fragment="content" class="container">
 
     <div th:if="${url} == null"><h1>Bienvenue sur mon site qu'il est bien</h1></div>
-
-    <div sec:authorize="#{isAuthenticated()}">
-        Vous êtes connecté.
-    </div>
-    <div sec:authorize="#{isAnonymous()}">
-        Vous n'êtes pas connecté.
-    </div>
-
     <div>
         <div th:if="${pages} != null">
             <div th:if="${#lists.size(pages)} == 0">

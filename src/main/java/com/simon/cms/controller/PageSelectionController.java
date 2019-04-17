@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -23,14 +22,13 @@ public class PageSelectionController {
 
   @GetMapping("/administration/pageSelection")
   public String showPageSelection(Model model,
-                                  @RequestParam("page") Optional<Integer> page,
-                                  @RequestParam("size") Optional<Integer> size){
+                                  @RequestParam("page") Optional<Integer> page){
 
     // Sur la page passée en paramètre ou sur la première
     int currentPage = page.orElse(1);
 
     // 8 pages du site par page de la pagination (pour une grille de 9 avec le bouton nouvelle page)
-    int pageSize = size.orElse(8);
+    int pageSize = 8;
 
 
     org.springframework.data.domain.Page<Page> pagePage = pageDAO.findPaginated(PageRequest.of(currentPage-1, pageSize));
@@ -48,12 +46,20 @@ public class PageSelectionController {
     return "/administration/pageSelection";
   }
 
-  @GetMapping("/administration/pageSelection/visibilite/{page_id}")
-  public String changeVisibility(@PathVariable Long page_id){
+  @GetMapping("/administration/pageSelection/visibilite")
+  public String changeVisibility(@RequestParam("pageId") Long pageId, @RequestParam("page") int page){
 
-    Page p = pageDAO.findPageById(page_id);
+    Page p = pageDAO.findPageById(pageId);
     pageDAO.changeVisibility(p);
 
-    return "redirect:/administration/pageSelection";
+    return "redirect:/administration/pageSelection?page="+page;
+  }
+  
+  @GetMapping("/administration/pageSelection/suppression")
+  public String deletePage(@RequestParam Long pageId, @RequestParam int page){
+    Page p = pageDAO.findPageById(pageId);
+    pageDAO.removePage(p);
+
+    return "redirect:/administration/pageSelection?page="+page;
   }
 }

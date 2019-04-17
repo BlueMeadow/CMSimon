@@ -43,8 +43,8 @@
                         <hr>
                         <p class="" th:text="${page.resume}">-- RESUME --</p>
                         <a th:href="@{|/administration/pageEdition/${page.id}|}" class="btn btn-primary">Éditer</a>
-                        <a th:href="@{|/administration/pageSelection/visibilite/${page.id}|}" class="btn btn-primary" th:text="${page.visible} == true ? 'Cacher' : 'Publier'">-- TEXTE BOUTON--</a>
-                        <button class="btn btn-primary" th:onclick="fire_ajax_delete_page()">Supprimer</button>
+                        <a th:href="@{/administration/pageSelection/visibilite(page=${pagination.number+1}, pageId=${page.id})}" class="btn btn-primary" th:text="${page.visible} == true ? 'Cacher' : 'Publier'">-- TEXTE BOUTON--</a>
+                    <a th:href="@{/administration/pageSelection/suppression(page=${pagination.number+1}, pageId=${page.id})}" class="btn btn-primary" >Supprimer</a>
                 </section>
             </div>
         </div>
