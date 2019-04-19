@@ -18,8 +18,24 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="inputContenu">Page</label>
-        <textarea id="inputContenu" class="form-control vresize" th:field="*{contenu_p}" rows="35" required></textarea>
+        <label for="inputResume">Résumé</label>
+        <textarea id="inputResume" class="form-control noresize" th:field="*{resume}" rows="2" maxlength="255" required></textarea>
+        <div class="invalid-feedback">
+            Vous ne pouvez pas publier de page sans résumé.
+        </div>
+    </div>
+<!--    <div class="form-row">-->
+<!--        <div class="custom-file form-group col-md-9">-->
+<!--            <input type="file" class="custom-file-input" id="customFile" name="file" required>-->
+<!--            <label class="custom-file-label" for="customFile">Choose file</label>-->
+<!--            <div id="upload-invalid-feedack" class="invalid-feedback">OMG</div>-->
+<!--        </div>-->
+<!--        <div class="invalid-feedback">OMG</div>-->
+<!--    </div>-->
+    <div class="form-group">
+        <label for="summernote">Page</label>
+        <textarea id="summernote" class="form-control" th:field="*{contenuP}" rows="35" required></textarea>
+
         <div class="invalid-feedback">
             Vous ne pouvez pas publier une page vide.
         </div>
@@ -29,15 +45,16 @@
 
 
 <script>
+
+
+
     (function() {
         'use strict';
         window.addEventListener('load', function() {
-// Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.getElementsByClassName('needs-validation');
-// Loop over them and prevent submission
             var validation = Array.prototype.filter.call(forms, function(form) {
                 form.addEventListener('submit', function(event) {
-                    if (form.checkValidity() === false) {
+                    if (form.checkValidity() === false || validate() === false) {
                         event.preventDefault();
                         event.stopPropagation();
                     }
@@ -46,5 +63,83 @@
             });
         }, false);
     })();
+
+    $('#summernote').summernote({
+        placeholder: 'Hello bootstrap 4',
+        tabsize: 2,
+        height: 500
+    });
+
+
+
+    $(document).ready(function () {
+
+        $("#uploadForm").submit(function (event) {
+            //Bloque le submit, on l'envoie à la main
+            event.preventDefault();
+        });
+    });
+
+    $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+
+    var validFileExtensions = [".jpg", ".jpeg", ".bmp", ".gif", ".png"];
+    function validate() {
+        // var input = document.getElementById("customFile");
+        // var file = input.value;
+        //
+        // //Possible de ne pas upload de photo ?
+        // // if(file === '' || input.value === null) {
+        // //     // Pas de fichier sélectionné
+        // //     document.getElementById("customFile").classList.add("is-invalid");
+        // //     $("#upload-invalid-feedback").html("Veuillez sélectionner un fichier.");
+        // //     return false;
+        // // }
+        // var ok = false;
+        // for(var i = 0 ; i < validFileExtensions.length ; i++) {
+        //     var ext = validFileExtensions[i];
+        //     if (file.substr(file.length - ext.length, ext.length).toLocaleLowerCase() === ext) {
+        //         ok = true;
+        //     }
+        // }
+        //
+        // if(!ok) {
+        //     document.getElementById("customFile").classList.add("is-invalid");
+        //     $("#upload-invalid-feedback").html("Désolé, " + file + " n'est pas un fichier valide, les extensions autorisées sont: " + validFileExtensions.join(", "));
+        //     return false;
+        // }
+        //
+        // if(input.files[0].size > 5242880) {
+        //     document.getElementById("customFile").classList.add("is-invalid");
+        //     $("#upload-invalid-feedback").html("Désolé, " + file + " n'est pas un fichier valide, la taille maximale autorisée est de 5MO. (taille actuelle " + (input.files[0].size/1024/1024).toFixed(2) +"MO)." );
+        //     return false;
+        // }
+
+        return true;
+
+    }
+
+    $("#inputResume").maxlength({
+        alwaysShow: true, //if true the threshold will be ignored and the remaining length indication will be always showing up while typing or on focus on the input. Default: false.
+        // threshold: 10, //Ignored if alwaysShow is true. This is a number indicating how many chars are left to start displaying the indications. Default: 10
+        warningClass: "form-text text-muted mt-1", //it's the class of the element with the indicator. By default is the bootstrap "badge badge-success" but can be changed to anything you'd like.
+        limitReachedClass: "form-text text-danger mt-1", //it's the class the element gets when the limit is reached. Default is "badge badge-danger". Replace with text-danger if you want it to be red.
+        //separator: ' of ', //represents the separator between the number of typed chars and total number of available chars. Default is "/".
+        //preText: 'You have ', //is a string of text that can be outputted in front of the indicator. preText is empty by default.
+        //postText: ' chars remaining.', //is a string outputted after the indicator. postText is empty by default.
+        showMaxLength: true, //showMaxLength: if false, will display just the number of typed characters, e.g. will not display the max length. Default: true.
+        showCharsTyped: true, //if false, will display just the remaining length, e.g. will display remaining lenght instead of number of typed characters. Default: true.
+        placement: 'bottom-right-inside', //is a string, object, or function, to define where to output the counter. Possible string values are: bottom ( default option ), left, top, right, bottom-right, top-right, top-left, bottom-left and centered-right. Are also available : **bottom-right-inside** (like in Google's material design, **top-right-inside**, **top-left-inside** and **bottom-left-inside**. stom placements can be passed as an object, with keys top, right, bottom, left, and position. These are passed to $.fn.css. A custom function may also be passed. This method is invoked with the {$element} Current Input, the {$element} MaxLength Indicator, and the Current Input's Position {bottom height left right top width}.
+
+        //appendToParent: true, // appends the maxlength indicator badge to the parent of the input rather than to the body.
+        //message: an alternative way to provide the message text, i.e. 'You have typed %charsTyped% chars, %charsRemaining% of %charsTotal% remaining'. %charsTyped%, %charsRemaining% and %charsTotal% will be replaced by the actual values. This overrides the options separator, preText, postText and showMaxLength. Alternatively you may supply a function that the current text and max length and returns the string to be displayed. For example, function(currentText, maxLength) { return '' + Math.ceil(currentText.length / 160) + ' SMS Message(s)';}
+        //utf8: if true the input will count using utf8 bytesize/encoding. For example: the '£' character is counted as two characters.
+        //showOnReady: shows the badge as soon as it is added to the page, similar to alwaysShow
+        twoCharLinebreak: true //count linebreak as 2 characters to match IE/Chrome textarea validation
+        //customMaxAttribute: String -- allows a custom attribute to display indicator without triggering native maxlength behaviour. Ignored if value greater than a native maxlength attribute. 'overmax' class gets added when exceeded to allow user to implement form validation.
+        //allowOverMax: Will allow the input to be over the customMaxLength. Useful in soft max situations.
+    });
 </script>
 </header>

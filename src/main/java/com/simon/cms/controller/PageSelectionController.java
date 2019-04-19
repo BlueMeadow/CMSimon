@@ -17,8 +17,14 @@ import java.util.stream.IntStream;
 @Controller
 public class PageSelectionController {
 
-  @Autowired
+  private final
   PageDAO pageDAO;
+
+  @Autowired
+  public PageSelectionController(PageDAO pageDAO) {
+    this.pageDAO = pageDAO;
+  }
+
 
   @GetMapping("/administration/pageSelection")
   public String showPageSelection(Model model,

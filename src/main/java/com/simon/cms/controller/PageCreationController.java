@@ -1,7 +1,7 @@
 package com.simon.cms.controller;
 
+import com.simon.cms.DTO.ContentPageDto;
 import com.simon.cms.dao.dao.PageDAO;
-import com.simon.cms.form.ContentPageDto;
 import com.simon.cms.model.Page;
 import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +19,23 @@ import java.util.Calendar;
 @Controller
 public class PageCreationController {
 
-  @Autowired
+  private final
   HttpServletRequest request;
 
-  @Autowired
+  private final
   PageDAO pageDAO;
+
+  @Autowired
+  public PageCreationController(HttpServletRequest request, PageDAO pageDAO) {
+    this.request = request;
+    this.pageDAO = pageDAO;
+  }
+
 
   @GetMapping("/administration/pageCreation")
   public String showCreationForm(Model model){
 
-    ContentPageDto dto = new ContentPageDto("", "", "");
+    ContentPageDto dto = new ContentPageDto("", "", "", ""/*, null*/);
     model.addAttribute("pageForm", dto);
 
     return "/administration/pageCreation";
@@ -40,7 +47,15 @@ public class PageCreationController {
     Page p;
     try {
       KeycloakSecurityContext ksc = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
-      p = new Page(URLEncoder.encode(dto.getUrl(), StandardCharsets.UTF_8.toString()), dto.getTitre(), dto.getContenu_p(),ksc.getIdToken().getPreferredUsername(), Calendar.getInstance().getTime());
+      //String image = dto.getImage() != null ? dto.getImage().getName() : "";
+
+      p = new Page(URLEncoder.encode(dto.getUrl(), StandardCharsets.UTF_8.toString()),
+                  dto.getTitre(),
+                  dto.getContenuP(),
+                  dto.getResume(),
+                  ksc.getIdToken().getPreferredUsername(),
+                  Calendar.getInstance().getTime()/*,
+                  image*/);
     } catch (UnsupportedEncodingException e) {
       return "/error";
     }

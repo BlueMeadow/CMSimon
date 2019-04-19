@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
- xmlns:th="http://www.w3.org/1999/xhtml">
+      xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
 
 </head>
@@ -10,7 +10,7 @@
 
     <h1 id="titre" th:text="${page.titre}">-- TITRE --</h1>
     <br>
-    <div id="contenu" th:text="${page.contenu}">-- CONTENU --</div>
+    <div id="contenu" th:utext="${page.contenu}">-- CONTENU --</div>
     <div id="auteur" >
         <small class="text-muted">
             <span class="font-weight-bold" th:text="${page.auteur}">-- AUTEUR --</span>
@@ -26,7 +26,7 @@
     <div th:each="commentaire : ${commentaires}">
         <div class="card">
             <div class="card-body text-primary">
-                <p id="comm_content" class="card-text" th:text="${commentaire.contenu}">-- CONTENU --</p>
+                <p id="comm_content" class="card-text" th:utext="${commentaire.contenu}">-- CONTENU --</p>
             </div>
             <p class="card-text">
                 <small class="text-muted"><span class="font-weight-bold" th:text="${commentaire.auteur}">-- AUTEUR --</span>
@@ -34,7 +34,12 @@
             </p>
         </div>
     </div>
-    <div id="nv_comm">
+    <div sec:authorize="isAnonymous()">
+        Merci de vous connecter pour poster un commentaire.<br>
+        <a th:href="@{/login(redirect=${page.url})}">Connexion</a>
+
+    </div>
+    <div id="nv_comm" sec:authorize="isAuthenticated()">
         <br>
         <form id="commentForm" method="POST">
             <label for="commContent">Nouveau commentaire</label>
@@ -55,7 +60,7 @@
         function fire_ajax_submit() {
 
             var rqBody = {};
-            rqBody["contenu_c"] = document.getElementById("commContent").value;
+            rqBody["contenuC"] = document.getElementById("commContent").value;
 
             //Bloque le bouton submit le temps qu'on reçoive la réponse de la requete
             $("#submitComment").prop("disabled", true);
@@ -73,14 +78,7 @@
                     //Réactive le bouton submit après avoir recu la réponse
                     $("#submitComment").prop("disabled", false);
 
-                    //Récupère l'url du fichier
-                    /*<![CDATA[*/
 
-                    var url = /*[[@{/fragments/comments}]]*/ 'default';
-
-                    /*]]>*/
-
-                    console.log(url);
                     $('#commentContainer').html(data);
 
 

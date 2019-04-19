@@ -9,18 +9,18 @@ public class Commentaire {
 
     @Id
     @GeneratedValue
-    private Long comm_id;
+    private Long commId;
 
     private String auteur;
 
     @ManyToOne
-    @JoinColumn(name = "page_id_c")
+    @JoinColumn(name = "pageIdC")
     private Page page;
 
-    private Date date_publication_c;
+    private Date datePublicationC;
 
     @Column(length = 65535,columnDefinition="Text")
-    private String contenu_c;
+    private String contenuC;
 
     //A été vu par un modérateur / administrateur sur la page de modération
     private boolean modere;
@@ -28,20 +28,20 @@ public class Commentaire {
     public Commentaire() {
     }
 
-    public Commentaire(String auteur, Page page, Date date_publication_c, String contenu_c) {
+    public Commentaire(String auteur, Page page, Date datePublicationC, String contenuC) {
         this.auteur = auteur;
         this.page = page;
-        this.date_publication_c = date_publication_c;
-        this.contenu_c = contenu_c;
+        this.datePublicationC = datePublicationC;
+        this.contenuC = contenuC;
         this.modere = false;
     }
 
     public Long getId() {
-        return comm_id;
+        return commId;
     }
 
-    public void setId(Long comm_id) {
-        this.comm_id = comm_id;
+    public void setId(Long commId) {
+        this.commId = commId;
     }
 
     public String getAuteur() {
@@ -61,19 +61,19 @@ public class Commentaire {
     }
 
     public Date getDate() {
-        return date_publication_c;
+        return datePublicationC;
     }
 
-    public void setDate(Date date_c) {
-        this.date_publication_c = date_c;
+    public void setDate(Date date) {
+        this.datePublicationC = date;
     }
 
     public String getContenu() {
-        return contenu_c;
+        return contenuC;
     }
 
-    public void setContenu(String contenu_c) {
-        this.contenu_c = contenu_c;
+    public void setContenu(String contenu) {
+        this.contenuC = contenu;
     }
 
     public boolean isModere() {

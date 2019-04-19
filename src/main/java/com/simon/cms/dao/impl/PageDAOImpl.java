@@ -32,7 +32,7 @@ public class PageDAOImpl implements PageDAO {
     @Transactional
     public List<Page> getPageList() {
         // Ordonnée de la plus récente à la plus ancienne
-        String qlString = "SELECT page FROM Page page ORDER BY page.date_edition_p DESC, page.date_creation_p DESC, page.page_id DESC";
+        String qlString = "SELECT page FROM Page page ORDER BY page.dateEditionP DESC, page.dateCreationP DESC, page.pageId DESC";
 
         return em.createQuery(qlString).getResultList();
     }
@@ -43,7 +43,7 @@ public class PageDAOImpl implements PageDAO {
     @Override
     @Transactional
     public List<Page> getVisiblePageList() {
-        String qlString = "SELECT page FROM Page page WHERE page.visible = true ORDER BY page.date_publication_p DESC";
+        String qlString = "SELECT page FROM Page page WHERE page.visible = true ORDER BY page.datePublicationP DESC";
         return em.createQuery(qlString).getResultList();
     }
 
@@ -67,7 +67,7 @@ public class PageDAOImpl implements PageDAO {
         p.setVisible(!p.isVisible());
         // Change la date de publication si la page est devenue visible
         if(p.isVisible()){
-            p.setDate_publication_p(Calendar.getInstance().getTime());
+            p.setDatePublicationP(Calendar.getInstance().getTime());
         }
         updatePage(p);
     }

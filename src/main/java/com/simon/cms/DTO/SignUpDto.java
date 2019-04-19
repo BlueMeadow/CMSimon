@@ -1,4 +1,4 @@
-package com.simon.cms.form;
+package com.simon.cms.DTO;
 
 public class SignUpDto {
 

@@ -41,7 +41,7 @@
                 <section class="section-feature-plain">
                         <h2 th:text="${page.titre}">-- TITRE--</h2>
                         <hr>
-                        <p class="" th:text="${page.resume}">-- RESUME --</p>
+                        <p class="" th:utext="${page.resume}">-- RESUME --</p>
                         <a th:href="@{|/administration/pageEdition/${page.id}|}" class="btn btn-primary">Éditer</a>
                         <a th:href="@{/administration/pageSelection/visibilite(page=${pagination.number+1}, pageId=${page.id})}" class="btn btn-primary" th:text="${page.visible} == true ? 'Cacher' : 'Publier'">-- TEXTE BOUTON--</a>
                     <a th:href="@{/administration/pageSelection/suppression(page=${pagination.number+1}, pageId=${page.id})}" class="btn btn-primary" >Supprimer</a>

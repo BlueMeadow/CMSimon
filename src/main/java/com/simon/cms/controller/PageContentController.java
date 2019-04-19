@@ -7,6 +7,7 @@ import com.simon.cms.model.Page;
 import org.json.JSONObject;
 import org.keycloak.KeycloakSecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -19,22 +20,24 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
 public class PageContentController {
 
-  @Autowired
+  private final
   PageDAO pageDAO;
 
-  @Autowired
+  private final
   CommentaireDAO commDAO;
 
   @Autowired
-  HttpServletRequest request;
+  public PageContentController(PageDAO pageDAO, CommentaireDAO commDAO) {
+    this.pageDAO = pageDAO;
+    this.commDAO = commDAO;
+  }
 
-//  @Autowired
-//  AccessToken token;
 
   @GetMapping("/{url}")
   public String displayPage(Principal principal, Model model, @PathVariable String url){
@@ -48,20 +51,24 @@ public class PageContentController {
   }
 
   @PostMapping("/{url}")
-  public String addComment(Model model, Principal principal, @RequestBody String contenu_c, Errors errors, @PathVariable String url) {
+  public String addComment(Model model, HttpServletRequest request, @RequestBody String contenuC, Errors errors, @PathVariable String url) {
 
     String result;
 
     //Si erreur -> Renvoyer un 400 bad request
     if (errors.hasErrors()) {
       result = errors.getAllErrors()
-                        .stream().map(x -> x.getDefaultMessage())
+                        .stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
                         .collect(Collectors.joining(","));
       return result;
     }
 
-    JSONObject jsonObject = new JSONObject(contenu_c);
-    String contenu = jsonObject.getString("contenu_c");
+    Map m = model.asMap();
+
+    m.forEach((k,v) -> System.out.println(k + " - " + v));
+
+    JSONObject jsonObject = new JSONObject(contenuC);
+    String contenu = jsonObject.getString("contenuC");
 
     Page p = pageDAO.findPageByUrl(url);
     KeycloakSecurityContext ksc = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());

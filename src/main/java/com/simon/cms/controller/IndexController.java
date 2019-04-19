@@ -5,25 +5,25 @@ import com.simon.cms.model.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
 public class IndexController {
 
-    @Autowired
-    PageDAO pageDAO;
+    private final PageDAO pageDAO;
 
     @Autowired
-    HttpServletRequest request;
+    public IndexController(PageDAO pageDAO) {
+        this.pageDAO = pageDAO;
+    }
+
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
-    public String showIndex(Model model){
+    public String showIndex(Model model, Principal principal){
 
         List<Page> pages = pageDAO.getVisiblePageList();
 
@@ -32,10 +32,4 @@ public class IndexController {
         return "index";
     }
 
-    @GetMapping("/logout")
-    public String logout() throws ServletException {
-        request.logout();
-
-        return "redirect:/";
-    }
 }

@@ -22,11 +22,18 @@ import java.util.stream.Collectors;
 @Controller
 public class ModerationController {
 
-  @Autowired
+  private final
   PageDAO pageDAO;
 
-  @Autowired
+  private final
   CommentaireDAO commDAO;
+
+  @Autowired
+  public ModerationController(PageDAO pageDAO, CommentaireDAO commDAO) {
+    this.pageDAO = pageDAO;
+    this.commDAO = commDAO;
+  }
+
 
   @GetMapping("/moderation")
   public String showModerationPage(Model model){

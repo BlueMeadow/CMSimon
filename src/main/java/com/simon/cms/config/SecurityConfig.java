@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
 
 
-  /*  demande au SimpleAuthorityMapper de vérifier que les roles ne sont pas
-   *  préfixés par >> ROLE_ <<
+  /**
+   * Registers the KeycloakAuthenticationProvider with the authentication manager.
    */
   @Autowired
   public void configureGlobal(
@@ -78,6 +78,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
         .antMatchers("/administration*").hasRole("admin") //Nécessite le role admin pour accéder à /administration
         .antMatchers("/moderation*").hasAnyRole("admin", "moderator") //Nécessite le role admin ou modérateur pour accéder à /moderation
 //        .antMatchers(HttpMethod.POST, "/*").authenticated() // Les gens peuvent faire des posts (commentaires)
+        .antMatchers("/protectedSwitcheroo").authenticated()
         .anyRequest().permitAll();  // le reste des egns a accès en lecture
   }
 

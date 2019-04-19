@@ -37,7 +37,7 @@ public class CommentaireDAOImpl implements CommentaireDAO {
     @Transactional
     public List<Commentaire> getListCommentaireByPage(Page p) {
         String qlString = "SELECT commentaire FROM Commentaire commentaire WHERE " +
-                              "commentaire.page = '"+p.getId()+"' ORDER BY commentaire.date_publication_c DESC";
+                              "commentaire.page = '"+p.getId()+"' ORDER BY commentaire.datePublicationC DESC";
         return em.createQuery(qlString).getResultList();
     }
 
@@ -45,7 +45,7 @@ public class CommentaireDAOImpl implements CommentaireDAO {
     @Transactional
     public List<Commentaire> getListCommentaireModeresByPage(Page p) {
         String qlString = "SELECT commentaire FROM Commentaire commentaire WHERE " +
-                          "commentaire.page = '"+p.getId()+"' AND commentaire.modere = true ORDER BY commentaire.date_publication_c ASC";
+                          "commentaire.page = '"+p.getId()+"' AND commentaire.modere = true ORDER BY commentaire.datePublicationC";
         return em.createQuery(qlString).getResultList();
 
     }
@@ -54,7 +54,7 @@ public class CommentaireDAOImpl implements CommentaireDAO {
     @Transactional
     public List<Commentaire> getListCommentaireNonModeresByPage(Page p) {
         String qlString = "SELECT commentaire FROM Commentaire commentaire WHERE " +
-                              "commentaire.page = '"+p.getId()+"' AND commentaire.modere = false ORDER BY commentaire.date_publication_c ASC";
+                              "commentaire.page = '"+p.getId()+"' AND commentaire.modere = false ORDER BY commentaire.datePublicationC";
         return em.createQuery(qlString).getResultList();
 
     }

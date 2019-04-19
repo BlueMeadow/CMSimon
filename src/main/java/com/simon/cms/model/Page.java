@@ -14,47 +14,47 @@ public class Page {
 
     @Id
     @GeneratedValue
-    private Long page_id;
-    @Column(name = "url")
+    private Long pageId;
     private String url;
-    @Column(name = "titre")
     private String titre;
-    @Column(name = "resume")
     private String resume;
-    @Column(name= "contenu_p", length = 65535,columnDefinition="Text")
-    private String contenu_p;
-    @Column(name = "date_creation_p")
-    private Date date_creation_p;
+    @Column(columnDefinition="Text")
+    private String contenuP;
+
+    private Date dateCreationP;
     @Nullable
-    private Date date_edition_p;
+    private Date dateEditionP;
     @Nullable
-    private Date date_publication_p;
+    private Date datePublicationP;
     private boolean visible;
-    
     private String auteur;
+//    @Nullable
+//    private String pathToImage;
 
 
     // nouvelle page
-    public Page(String url, String titre, String contenu_p, String auteur, Date date_creation_p) {
+    public Page(String url, String titre, String contenuP, String resume, String auteur, Date dateCreationP/*, String pathToImage*/) {
         this.url = url;
         this.titre = titre;
-        this.contenu_p = contenu_p;
-        this.date_creation_p = date_creation_p;
-        this.date_edition_p = null;
-        generateResume();
+        this.contenuP = contenuP;
+        this.resume = resume;
+        this.dateCreationP = dateCreationP;
+        this.dateEditionP = null;
         this.visible = false;
         this.auteur = auteur;
+//        this.pathToImage = pathToImage;
+
     }
 
     public Page() {
     }
 
     public Long getId() {
-        return page_id;
+        return pageId;
     }
 
     public void setId(Long page_id) {
-        this.page_id = page_id;
+        this.pageId = page_id;
     }
 
     public String getUrl() {
@@ -77,13 +77,16 @@ public class Page {
         return resume;
     }
 
+    public void setResume(String resume) {
+        this.resume = resume;
+    }
+
     public String getContenu() {
-        return contenu_p;
+        return contenuP;
     }
 
     public void setContenu(String contenu_p) {
-        this.contenu_p = contenu_p;
-        generateResume();
+        this.contenuP = contenu_p;
     }
 
     public boolean isVisible() {
@@ -103,49 +106,48 @@ public class Page {
     }
 
     public Date getDateCreation() {
-        return date_creation_p;
+        return dateCreationP;
     }
 
     public void setDateCreation(Date date_creation_p) {
-        this.date_creation_p = date_creation_p;
+        this.dateCreationP = date_creation_p;
     }
 
     public Date getDateEdition() {
-        return date_edition_p;
+        return dateEditionP;
     }
 
     public void setDateEdition(Date date_edition_p) {
-        this.date_edition_p = date_edition_p;
+        this.dateEditionP = date_edition_p;
     }
 
     @Nullable
     public Date getDatePublication() {
-        return date_publication_p;
+        return datePublicationP;
     }
 
-    public void setDate_publication_p(@Nullable Date date_publication_p) {
-        this.date_publication_p = date_publication_p;
+    public void setDatePublicationP(@Nullable Date datePublicationP) {
+        this.datePublicationP = datePublicationP;
     }
+
+//    @Nullable
+//    public String getPathToImage() {
+//        return pathToImage;
+//    }
+//
+//    public void setPathToImage(@Nullable String pathToImage) {
+//        this.pathToImage = pathToImage;
+//    }
 
     // Juste pour éviter d'avoir à utiliser 3 setters dans le controleur et garder le code clair
-    public void edit(String titre, String url, String contenu_p, Date date_edition_p){
+    public void edit(String titre, String url, String contenu_p, String resume, Date dateEditionP){
         this.titre = titre;
         this.url = url;
         //pour regénérer le résumé
-        setContenu(contenu_p);
+        this.resume = resume;
         //Ne change la date que si la page est visible
         if(visible)
-            this.date_edition_p = date_edition_p;
+            this.dateEditionP = dateEditionP;
     }
-
-    private void generateResume(){
-        if(contenu_p.length() < 255){
-            this.resume = contenu_p;
-        } else {
-            this.resume = contenu_p.substring(0, 251) + "...";
-        }
-    }
-
-
 
 }
